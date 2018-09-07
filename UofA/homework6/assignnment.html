@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Assignment 6 - Alexander Le </title>
+</head>
+
+<body>
+  <button data-animal="bunny">
+      Bunny
+    
+  </button>
+  <button data-animal="puppy">
+    Puppy
+  </button>
+  <button data-animal="otter">
+    Otter
+  </button>
+
+  <button data-animal="red panda">
+  Red Panda
+    </button>
+
+  <button data-animal="chinchilla">
+      Chinchilla
+  </button>
+
+  <button data-animal="Chow Puppy">
+        Chow Puppy
+    </button>
+
+  
+
+  <div id="gifs-appear-here">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    
+    $("button").on("click", function() {
+      
+      var animal = $(this).attr("data-animal");
+
+    
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        animal + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+      
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        
+        .then(function(response) {
+        
+          var results = response.data;
+
+          
+          for (var i = 0; i < results.length; i++) {
+
+            
+            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+              
+              var gifDiv = $("<div class='item'>");
+
+              
+              var rating = results[i].rating;
+
+              
+              var p = $("<p>").text("Rating: " + rating);
+
+              
+              var personImage = $("<img>");
+
+              
+              personImage.attr("src", results[i].images.fixed_height.url);
+
+              
+              gifDiv.append(p);
+              gifDiv.append(personImage);
+
+              
+              $("#gifs-appear-here").prepend(gifDiv);
+            }
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>
